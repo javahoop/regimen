@@ -1,0 +1,74 @@
+spring:
+  # mysql数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: wsd120418
+    url: jdbc:mysql://139.9.48.18:3306/object?useUnicode=true&characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+#    username: xiaodu_dev
+#    password: 'Tv=9O9k:NlmB.s3+'
+#    url: jdbc:mysql://122.9.162.172:3306/xiaodu_v2_dev?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 连接池配置
+    druid:
+      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位毫秒
+      time-between-eviction-runs-millis: 60000
+      #保活机制开启
+      keep-alive: true
+      # 配置一个连接在池中最小空闲生存时间 此时间是对超过最小空闲连接数（ min-idle）以外的连接进行处理，可以用此参数进行保活判断
+      min-evictable-idle-time-millis: 1800000
+      # 配置一个连接在池中最大空闲生存时间 针对所有连接只要超过这个值就进行连接关闭 这个值要比数据库的wait-timeout要短，不然会出现数据库端连接自动关闭，而应用端连接还在存活，导致拿到数据库关闭的连接进行操作从而产生报错
+      max-evictable-idle-time-millis: 27000000
+      validation-query: SELECT 1 FROM sys_user
+      #当程序请求连接，池在分配连接时，是否先检查该连接是否有效。(高效)
+      test-while-idle: true
+      #程序 申请 连接时,进行连接有效性检查（低效，影响性能）
+      test-on-borrow: false
+      #程序 返还 连接时,进行连接有效性检查（低效，影响性能）
+      test-on-return: false
+      # 打开 PSCache，并且指定每个连接上 PSCache 的大小
+      pool-prepared-statements: true
+      #每个连接最多缓存多少个SQL
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的 Filter，去掉后监控界面 SQL 无法统计，wall 用于防火墙
+      filters: stat,wall,slf4j
+      # 通过 connection-properties 属性打开 mergeSql 功能；慢 SQL 记录
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1000;druid.stat.logSlowSql=true
+      # 配置 DruidStatFilter 访问地址 http://localhost:8080/druid/login.html
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: .js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*
+      # 配置 DruidStatViewServlet
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        # IP 白名单，没有配置或者为空，则允许所有访问
+        allow:
+        # IP 黑名单，若白名单也存在，则优先使用
+        # deny: 192.168.31.253
+        # 禁用 HTML 中 Reset All 按钮
+        #reset-enable: false
+        # 登录用户名/密码
+        login-username: root
+        login-password: 123
+      filter:
+
+# 日志配置
+logging:
+  level:
+    # 日志设置为debug级别
+    com.wsd.admin: debug
+
+#  file:
+#    # 日志文件存储地址
+#    name: ./logs/chat.out
+# 是否启用swagger
+swagger:
+  enable: true

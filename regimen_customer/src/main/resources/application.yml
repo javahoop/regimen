@@ -1,0 +1,64 @@
+# 公共配置文件
+server:
+  # 监听端口号
+  port: 8082
+  tomcat:
+    max-connections: 20000
+    threads:
+      max: 1000
+      min-spare: 20
+  servlet:
+    context-path: /customer
+
+spring:
+  freemarker:
+    checkTemplateLocation: false
+  profiles:
+    # 按照系统环境变量加载对应子配置文件,如未设置环境变量默认加载开发环境
+    active: dev
+  # json序列化配置
+  jackson:
+    # 驼峰转下划线,这里注释掉,避免大写字段被转换为小写字段
+    #property-naming-strategy: SNAKE_CASE
+    # 全局日期格式转化
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 设置时区(时区不要用GMT+8,在中国夏时制阶段会出现少1小时问题)
+    time-zone: Asia/Shanghai
+    # 忽略字段大小写
+    mapper:
+      accept-case-insensitive-properties: true
+# swagger接口文档配置
+
+# swagger接口文档配置
+swagger:
+  title: 养生饮品推荐用户端接口文档
+  description: 养生饮品推荐用户端接口
+  version: v1.0.0
+# 开启springdoc
+springdoc:
+  api-docs:
+    enabled: true
+  # 指定输出类型
+  default-produces-media-type: application/json
+  # 指定输入类型
+  default-consumes-media-type: application/json
+
+# 分页配置
+pagehelper:
+  # 指定mysql数据库类型
+  helper-dialect: mysql
+  # 分页合理化设置,当该参数设置为true时,pageNum<=0 时会查询第一页, pageNum>pages(超过总数时),会查询最后一页
+  reasonable: false
+  # 开启支持查询所有数据,当pageSize设置为0时不分页,但是返回结果仍然为Page类型
+  page-size-zero: true
+base:
+  domain:
+    package: com.wsd.*
+
+mybatis:
+  configuration:
+    # 开启驼峰命名支持
+    map-underscore-to-camel-case: true
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 扫描所有模块的mapper
+  mapper-locations: classpath*:com/wsd/customer/mapper/**/*.xml

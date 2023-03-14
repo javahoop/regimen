@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsd.admin.dao.QuestionDao">
+
+    <select id="select" resultType="com.wsd.admin.model.vo.QuestionVO">
+        <if test="classificationId!=null">
+        SELECT
+            q.*
+        FROM
+            (
+                SELECT
+                    question_id
+                FROM
+                    classification_question
+                WHERE
+                    classification_id = #{classificationId}
+                  AND is_delete = 0
+                  AND is_enable = 1
+            ) cq
+                INNER JOIN (
+        </if>
+                SELECT
+                    *
+                FROM
+                    question q
+                WHERE
+                    q.is_delete = 0
+                  AND q.is_enable = 1
+                  <if test="questionType!=null">
+                      AND q.question_type = #{questionType}
+                  </if>
+        <if test="classificationId!=null">
+            ) q ON q.id = cq.question_id
+        </if>
+        ORDER BY q.create_time
+    </select>
+</mapper>

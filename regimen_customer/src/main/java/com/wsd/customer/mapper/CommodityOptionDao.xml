@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsd.customer.dao.CommodityOptionDao">
+
+    <select id="getByCommodityId" resultType="java.lang.Long">
+        SELECT
+            co.option_id
+        FROM
+            commodity_option co
+        WHERE
+            co.commodity_id = #{commodityId}
+            AND co.is_delete = 0
+	        AND co.is_enable =1
+
+    </select>
+</mapper>

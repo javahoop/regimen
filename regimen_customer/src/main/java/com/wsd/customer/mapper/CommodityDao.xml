@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsd.customer.dao.CommodityDao">
+
+    <select id="selectByOptionIds" resultType="com.wsd.customer.model.vo.CommodityVO">
+
+        SELECT
+            c.*
+        FROM
+            (
+                SELECT
+                    c.id,
+                    c.commodity_name,
+                    c.commodity_introduce
+                FROM
+                    commodity c
+                WHERE
+                    c.is_delete = 0
+                  AND c.is_enable = 1
+            ) c
+                INNER JOIN (
+                SELECT DISTINCT
+                    ( co.commodity_id )
+                FROM
+                    commodity_option co
+                WHERE
+                    co.is_delete = 0
+                  AND co.is_enable = 1
+                  AND option_id IN ( 1, 2, 3 )
+            ) co ON c.id = co.commodity_id
+
+    </select>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsd.customer.dao.QuestionDao">
+
+
+    <select id="selectByClassificationIds" resultType="com.wsd.customer.model.vo.QuestionVO">
+        SELECT
+            q.*
+        FROM
+            (
+                SELECT
+                    q.id,
+                    q.question_type,
+                    q.question_content
+                FROM
+                    question q
+                WHERE
+                    q.is_delete = 0
+                  AND q.is_enable = 1
+            ) q
+                INNER JOIN (
+                SELECT
+                 DISTINCT(question_id)
+                FROM
+                    classification_question cq
+                WHERE
+                    cq.is_delete = 0
+                  AND cq.is_enable = 1
+                  AND classification_id IN
+                <foreach collection="params"  index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                ) cq ON q.id = cq.question_id
+    </select>
+</mapper>
